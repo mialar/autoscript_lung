@@ -172,7 +172,7 @@ if lungs:
     lungs_fall_off, obj_num = fall_off(po, roi=lungs, o_num=obj_num, c_num=const_num, high_dose=6600, low_dose=0, distance=2)
 
 if boost:
-    boost_targetEUD, obj_num = targetEUD(po, roi=boost, dose=9500, o_num=obj_num, c_num=const_num, weight=4000)
+    boost_targetEUD, obj_num = targetEUD(po, roi=boost, dose=9500, o_num=obj_num, c_num=const_num, weight=4000,robust=True)
     boost_minDVH, obj_num = minDVH(po, roi=boost, dose=9025, volume=100, o_num=obj_num, c_num=const_num, weight=1500)
 
 if nodeboost:
