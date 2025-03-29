@@ -116,7 +116,7 @@ po = plan.PlanOptimizations[0]
 if ctv:
     ctv_minDose, const_num = minDose(po, roi=ctv, dose=6270, o_num=obj_num, c_num=const_num, constraint=True)
     ctv_minDVH, const_num = minDVH(po, roi=ctv, dose=6270, volume=100, o_num=obj_num, c_num=const_num, constraint=True, robust=True)
-    ctv_dose_fall_off, obj_num = fall_off(po, roi=ctv, o_num=obj_num, c_num=const_num, high_dose=9500, low_dose=6600, distance=1)
+    ctv_dose_fall_off, obj_num = fall_off(po, roi=ctv, o_num=obj_num, c_num=const_num, high_dose=9500, low_dose=0, distance=1)
     ctv_maxDose, const_num = maxDose(po, roi=ctv, dose=11500, o_num=obj_num, c_num=const_num, constraint=True)
     ctv_v100, obj_num = maxDVH(po, roi=ctv, dose=10000, volume=30, o_num=obj_num, c_num=const_num, absoluteVolume=True, weight=100)
     ctv_v105, obj_num = maxDVH(po, roi=ctv, dose=10500, volume=5, o_num=obj_num, c_num=const_num, absoluteVolume=True, weight=100)
@@ -172,7 +172,7 @@ if lungs:
     lungs_fall_off, obj_num = fall_off(po, roi=lungs, o_num=obj_num, c_num=const_num, high_dose=6600, low_dose=0, distance=2)
 
 if boost:
-    boost_targetEUD, obj_num = targetEUD(po, roi=boost, dose=9500, o_num=obj_num, c_num=const_num, weight=4000,robust=True)
+    boost_targetEUD, obj_num = targetEUD(po, roi=boost, dose=9500, o_num=obj_num, c_num=const_num, weight=100,robust=True)
     boost_minDVH, obj_num = minDVH(po, roi=boost, dose=9025, volume=100, o_num=obj_num, c_num=const_num, weight=1500)
 
 if nodeboost:
