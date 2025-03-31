@@ -8,9 +8,9 @@ from connect import *
 from tkinter import *
 from tkinter import Tk, Label, Button, Frame, X, simpledialog
 from tkinter import ttk
-from structure_gui import structure_lists, structure_gui, dict_unpack
-from beam_gui import beam_gui
-from function_definitions import *
+from ENLUCA_struct_gui import structure_lists, structure_gui, dict_unpack
+from ENLUCA_beam_gui import beam_gui
+from ENLUCA_func_defs import *
 
 try:
     db = get_current("PatientDB")
@@ -37,7 +37,7 @@ if not expanded:
     with CompositeAction(f'Expand (ICTV_expanded, Image set: Legeinntegning 20%)'):
         retval_0 = case.PatientModel.CreateRoi(Name="ICTV_expanded", Color="Cyan", Type="Ctv", TissueName=None,
                                                RbeCellTypeName=None, RoiMaterial=None)
-        retval_0.SetMarginExpression(SourceRoiName="ICTV",
+        retval_0.SetMarginExpression(SourceRoiName=ctv,
                                      MarginSettings={'Type': "Expand", 'Superior': 2, 'Inferior': 2, 'Anterior': 2,
                                                      'Posterior': 2, 'Right': 2, 'Left': 2})
         retval_0.UpdateDerivedGeometry(Examination=examination, Algorithm="Auto")
@@ -47,11 +47,11 @@ if not ictv_gtv:
     with CompositeAction('ROI algebra (ICTVp-IGTVp, Image set: Legeinntegning 20%)'):
         retval_0 = case.PatientModel.CreateRoi(Name="ictvp_igtvp", Color="Pink", Type="Ctv", TissueName=None,
                                                RbeCellTypeName=None, RoiMaterial=None)
-        retval_0.SetAlgebraExpression(ExpressionA={'Operation': "Union", 'SourceRoiNames': ["ICTVp"],
+        retval_0.SetAlgebraExpression(ExpressionA={'Operation': "Union", 'SourceRoiNames': [ctvp],
                                                    'MarginSettings': {'Type': "Expand", 'Superior': 0, 'Inferior': 0,
                                                                       'Anterior': 0, 'Posterior': 0, 'Right': 0,
                                                                       'Left': 0}},
-                                      ExpressionB={'Operation': "Union", 'SourceRoiNames': ["IGTVp"],
+                                      ExpressionB={'Operation': "Union", 'SourceRoiNames': [gtvp],
                                                    'MarginSettings': {'Type': "Expand", 'Superior': 0, 'Inferior': 0,
                                                                       'Anterior': 0, 'Posterior': 0, 'Right': 0,
                                                                       'Left': 0}}, ResultOperation="Subtraction",
@@ -114,8 +114,8 @@ po = plan.PlanOptimizations[0]
 
 # CTV optimization functions
 if ctv:
-    ctv_minDose, const_num = minDose(po, roi=ctv, dose=6270, o_num=obj_num, c_num=const_num, constraint=True)
-    ctv_minDVH, const_num = minDVH(po, roi=ctv, dose=6270, volume=100, o_num=obj_num, c_num=const_num, constraint=True, robust=True)
+    ctv_minDose, const_num = minDose(po, roi=ctv, dose=6500, o_num=obj_num, c_num=const_num, constraint=True)
+    ctv_minDVH, const_num = minDVH(po, roi=ctv, dose=6500, volume=100, o_num=obj_num, c_num=const_num, constraint=True, robust=True)
     ctv_dose_fall_off, obj_num = fall_off(po, roi=ctv, o_num=obj_num, c_num=const_num, high_dose=9500, low_dose=0, distance=1)
     ctv_maxDose, const_num = maxDose(po, roi=ctv, dose=11500, o_num=obj_num, c_num=const_num, constraint=True)
     ctv_v100, obj_num = maxDVH(po, roi=ctv, dose=10000, volume=30, o_num=obj_num, c_num=const_num, absoluteVolume=True, weight=100)
@@ -169,10 +169,10 @@ if lungs:
     lungs_20gy, obj_num = maxDVH(po, roi=lungs, dose=2000, volume=35, o_num=obj_num, c_num=const_num, weight=1500)
     lungs_5gy, obj_num = maxDVH(po, roi=lungs, dose=500, volume=60, o_num=obj_num, c_num=const_num, weight=1500)
     lungs_maxEUD, obj_num = maxEUD(po, roi=lungs, dose=2000, o_num=obj_num, c_num=const_num, weight=1500)
-    lungs_fall_off, obj_num = fall_off(po, roi=lungs, o_num=obj_num, c_num=const_num, high_dose=6600, low_dose=0, distance=2)
+    lungs_fall_off, obj_num = fall_off(po, roi=lungs, o_num=obj_num, c_num=const_num, high_dose=6600, low_dose=0, distance=1)
 
 if boost:
-    boost_targetEUD, obj_num = targetEUD(po, roi=boost, dose=9500, o_num=obj_num, c_num=const_num, weight=100,robust=True)
+    boost_targetEUD, obj_num = targetEUD(po, roi=boost, dose=9300, o_num=obj_num, c_num=const_num, weight=100,robust=True)
     boost_minDVH, obj_num = minDVH(po, roi=boost, dose=9025, volume=100, o_num=obj_num, c_num=const_num, weight=1500)
 
 if nodeboost:
