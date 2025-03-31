@@ -6,13 +6,18 @@
 
 from connect import *
 
-def addClinicalGoal(roi, goalCriteria, goalType, primaryAcceptanceLevel, 
-                    secondaryAcceptanceLevel=None, parameterValue=0, isComparativeGoal=False,
-                    beamSet=beamset, priority=2147483647, associateToPlan=False):
-    clinicalGoal = plan.TreatmentCourse.EvaluationSetup.AddClinicalGoal(RoiName=roi, GoalCriteria=goalCriteria, GoalType=goalType,
-                                                         PrimaryAcceptanceLevel=primaryAcceptanceLevel, SecondaryAcceptanceLevel=secondaryAcceptanceLevel,
-                                                         ParameterValue=parameterValue, IsComparativeGoal=isComparativeGoal, BeamSet=beamset, 
-                                                         Priority=priority, AssociateToPlan=associateToPlan)
+def addClinicalGoal(es, roi, goal, criteria, primary_acceptance, param_value=None, absolute=False,
+                    secondary_acceptance=None, priority=2147483647):
+    clinicalGoal = es.AddClinicalGoal()
+    clinicalGoal.StructureName=roi
+    clinicalGoal.GoalType=goal
+    clinicalGoal.GoalCriteria=criteria
+    clinicalGoal.UseAbsoluteVolume = absolute
+    clinicalGoal.ParameterValue=param_value
+    clinicalGoal.AcceptanceLevel=primary_acceptance
+    clinicalGoal.Priority=priority
+    
+    if secondary_acceptance is not None:
+        clinicalGoal.SecondaryAcceptanceLevel = secondary_acceptance
+    
     return clinicalGoal
-
-# Possible values for input for clinical goals:

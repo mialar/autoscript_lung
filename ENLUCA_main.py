@@ -11,6 +11,7 @@ from tkinter import ttk
 from ENLUCA_struct_gui import structure_lists, structure_gui, dict_unpack
 from ENLUCA_beam_gui import beam_gui
 from ENLUCA_func_defs import *
+from ENLUCA_clin_goals import addClinicalGoal
 
 try:
     db = get_current("PatientDB")
@@ -111,7 +112,10 @@ obj_num = 0
 const_num = 0
 
 po = plan.PlanOptimizations[0]
+# es=evaluation setup, abbrieviated to avoid length names
+es=plan.TreatmentCourse.EvaluationSetup
 
+clin_ctv_min=addClinicalGoal(es, "ICTV","MeanDose","AtLeast",6270)
 # CTV optimization functions
 if ctv:
     ctv_minDose, const_num = minDose(po, roi=ctv, dose=6500, o_num=obj_num, c_num=const_num, constraint=True)
