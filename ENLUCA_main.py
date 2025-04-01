@@ -133,7 +133,7 @@ if ctv:
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
     es.AddClinicalGoal(RoiName=ctv, GoalCriteria="AtMost", GoalType="AbsoluteVolumeAtDose", ParameterValue=10500, PrimaryAcceptanceLevel=5,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
-    es.AddClinicalGoal(RoiName=ctv, GoalCriteria="AtLeast", GoalType="VolumeAtDose", ParameterValue=6270, PrimaryAcceptanceLevel=100,
+    es.AddClinicalGoal(RoiName=ctv, GoalCriteria="AtLeast", GoalType="VolumeAtDose", ParameterValue=6270, PrimaryAcceptanceLevel=1,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
     es.AddClinicalGoal(RoiName=ctv, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=0.03, PrimaryAcceptanceLevel=11500,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
@@ -168,18 +168,18 @@ if heart:
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
     es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=5000,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
-    es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=2500, PrimaryAcceptanceLevel=50,
+    es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=2500, PrimaryAcceptanceLevel=0.50,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
-    es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=4000, PrimaryAcceptanceLevel=30,
+    es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=4000, PrimaryAcceptanceLevel=0.30,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
-    es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=5000, PrimaryAcceptanceLevel=20,
+    es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=5000, PrimaryAcceptanceLevel=0.20,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if esophagus:
     esophagus_maxDose, obj_num = maxDose(po, roi=esophagus, dose=6900, o_num=obj_num, c_num=const_num, weight=5000, robust=True)
     es.AddClinicalGoal(RoiName=esophagus, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7000,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
-    es.AddClinicalGoal(RoiName=esophagus, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=3500, PrimaryAcceptanceLevel=40,
+    es.AddClinicalGoal(RoiName=esophagus, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=3500, PrimaryAcceptanceLevel=0.40,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 
@@ -222,9 +222,9 @@ if lungs:
     
     es.AddClinicalGoal(RoiName=lungs, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=2000,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
-    es.AddClinicalGoal(RoiName=lungs, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=500, PrimaryAcceptanceLevel=55,
+    es.AddClinicalGoal(RoiName=lungs, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=500, PrimaryAcceptanceLevel=0.55,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
-    es.AddClinicalGoal(RoiName=lungs, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=2000, PrimaryAcceptanceLevel=35,
+    es.AddClinicalGoal(RoiName=lungs, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=2000, PrimaryAcceptanceLevel=0.35,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if boost:
