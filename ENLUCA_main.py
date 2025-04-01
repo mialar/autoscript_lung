@@ -115,7 +115,8 @@ po = plan.PlanOptimizations[0]
 # es=evaluation setup, abbrieviated to avoid length names
 es=plan.TreatmentCourse.EvaluationSetup
 
-clin_ctv_min=addClinicalGoal(es, "ICTV","MeanDose","AtLeast",6270)
+
+
 # CTV optimization functions
 if ctv:
     ctv_minDose, const_num = minDose(po, roi=ctv, dose=6500, o_num=obj_num, c_num=const_num, constraint=True)
@@ -124,6 +125,18 @@ if ctv:
     ctv_maxDose, const_num = maxDose(po, roi=ctv, dose=11500, o_num=obj_num, c_num=const_num, constraint=True)
     ctv_v100, obj_num = maxDVH(po, roi=ctv, dose=10000, volume=30, o_num=obj_num, c_num=const_num, absoluteVolume=True, weight=100)
     ctv_v105, obj_num = maxDVH(po, roi=ctv, dose=10500, volume=5, o_num=obj_num, c_num=const_num, absoluteVolume=True, weight=100)
+    
+    # Add clinical goals
+    es.AddClinicalGoal(RoiName=ctv, GoalCriteria="AtLeast", GoalType="AverageDose", PrimaryAcceptanceLevel=6270,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
+    es.AddClinicalGoal(RoiName=ctv, GoalCriteria="AtMost", GoalType="AbsoluteVolumeAtDose", ParameterValue=10000, PrimaryAcceptanceLevel=30,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
+    es.AddClinicalGoal(RoiName=ctv, GoalCriteria="AtMost", GoalType="AbsoluteVolumeAtDose", ParameterValue=10500, PrimaryAcceptanceLevel=5,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
+    es.AddClinicalGoal(RoiName=ctv, GoalCriteria="AtLeast", GoalType="VolumeAtDose", ParameterValue=6270, PrimaryAcceptanceLevel=100,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
+    es.AddClinicalGoal(RoiName=ctv, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=0.03, PrimaryAcceptanceLevel=11500,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if expanded:
     expanded_maxDose, obj_num = maxDose(po, roi=expanded, dose=7400, o_num=obj_num, c_num=const_num,
@@ -142,48 +155,99 @@ if body:
 
 if spinal:
     spinal_maxDose, obj_num = maxDose(po, roi=spinal, dose=4400, o_num=obj_num, c_num=const_num, weight=100000)
+    
+    es.AddClinicalGoal(RoiName=spinal, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=0.05, PrimaryAcceptanceLevel=4500,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if heart:
     heart_maxDose, obj_num = maxDose(po, roi=heart, dose=7400, o_num=obj_num, c_num=const_num, weight=1500)
     heart_meanDose, obj_num = maxEUD(po, roi=heart, dose=500, o_num=obj_num, c_num=const_num, weight=1500, robust=True)
     heart_fall_off, obj_num = fall_off(po, roi=heart, o_num=obj_num, c_num=const_num, high_dose=6600, low_dose=0, distance=2)
+    
+    es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7400,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
+    es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=5000,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
+    es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=2500, PrimaryAcceptanceLevel=50,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
+    es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=4000, PrimaryAcceptanceLevel=30,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
+    es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=5000, PrimaryAcceptanceLevel=20,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if esophagus:
     esophagus_maxDose, obj_num = maxDose(po, roi=esophagus, dose=6900, o_num=obj_num, c_num=const_num, weight=5000, robust=True)
+    es.AddClinicalGoal(RoiName=esophagus, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7000,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
+    es.AddClinicalGoal(RoiName=esophagus, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=3500, PrimaryAcceptanceLevel=40,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
+
 
 if chestwall:
     chestwall_maxDose, const_num = maxDose(po, roi=chestwall, dose=7300, o_num=obj_num, c_num=const_num, constraint=True)
+    es.AddClinicalGoal(RoiName=chestwall, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7400,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if mediastinum:
     mediastinum_maxDose, const_num = maxDose(po, roi=mediastinum, dose=7200, o_num=obj_num, c_num=const_num, constraint=True)
+    es.AddClinicalGoal(RoiName=mediastinum, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7400,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if trachea:
     trachea_maxDose, obj_num = maxDose(po, roi=trachea, dose=7400, o_num=obj_num, c_num=const_num, weight=1500, robust=True)
+    
+    es.AddClinicalGoal(RoiName=trachea, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7400,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if bronchi:
     bronchi_maxDose, obj_num = maxDose(po, roi=bronchi, dose=7400, o_num=obj_num, c_num=const_num, weight=5000, robust=True)
+    es.AddClinicalGoal(RoiName=bronchi, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7400,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if aorta:
     aorta_maxDose, obj_num = maxDose(po, roi=aorta, dose=7300, o_num=obj_num, c_num=const_num, weight=5000)
+    es.AddClinicalGoal(RoiName=aorta, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7400,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if plexus:
     plexus_maxDose, obj_num = maxDose(po, roi=plexus, dose=7400, o_num=obj_num, c_num=const_num, weight=1500)
+    es.AddClinicalGoal(RoiName=plexus, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7400,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if lungs:
     lungs_20gy, obj_num = maxDVH(po, roi=lungs, dose=2000, volume=35, o_num=obj_num, c_num=const_num, weight=1500)
     lungs_5gy, obj_num = maxDVH(po, roi=lungs, dose=500, volume=60, o_num=obj_num, c_num=const_num, weight=1500)
     lungs_maxEUD, obj_num = maxEUD(po, roi=lungs, dose=2000, o_num=obj_num, c_num=const_num, weight=1500)
     lungs_fall_off, obj_num = fall_off(po, roi=lungs, o_num=obj_num, c_num=const_num, high_dose=6600, low_dose=0, distance=1)
+    
+    es.AddClinicalGoal(RoiName=lungs, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=2000,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
+    es.AddClinicalGoal(RoiName=lungs, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=500, PrimaryAcceptanceLevel=55,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
+    es.AddClinicalGoal(RoiName=lungs, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=2000, PrimaryAcceptanceLevel=35,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if boost:
     boost_targetEUD, obj_num = targetEUD(po, roi=boost, dose=9300, o_num=obj_num, c_num=const_num, weight=100,robust=True)
     boost_minDVH, obj_num = minDVH(po, roi=boost, dose=9025, volume=100, o_num=obj_num, c_num=const_num, weight=1500)
+    
+    es.AddClinicalGoal(RoiName=ctv, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=9500,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if nodeboost:
     nodeboost_targetEUD, obj_num = targetEUD(po, roi=nodeboost, dose=7400, o_num=obj_num, c_num=const_num, weight=100)
     nodeboost_maxDose, obj_num = maxDose(po, roi=nodeboost, dose=8000, o_num=obj_num, c_num=const_num, weight=1500)
     nodeboost_minDVH, obj_num = minDVH(po, roi=nodeboost, dose=7125, volume=100, o_num=obj_num, c_num=const_num, weight=100)
+    
+    es.AddClinicalGoal(RoiName=nodeboost, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=7400,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
+if gtvn:
+    es.AddClinicalGoal(RoiName=gtvn, GoalCriteria="AtLeast", GoalType="AverageDose", PrimaryAcceptanceLevel=6600,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
+if gtvp:
+    es.AddClinicalGoal(RoiName=gtvp, GoalCriteria="AtLeast", GoalType="AverageDose", PrimaryAcceptanceLevel=6600,
+                                      IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 # Set optimization and robustness parameters and start optimization
 # 100 steps, 0.50 cm robustness margin, 3.5% density uncertainty
 optimization_parameters(po, iter=100, tolerance=1e-8, spot_weight=40, pos_uncert=0.5, dens_uncert=0.035)
