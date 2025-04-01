@@ -11,7 +11,7 @@ from tkinter import ttk
 from ENLUCA_struct_gui import structure_lists, structure_gui, dict_unpack
 from ENLUCA_beam_gui import beam_gui
 from ENLUCA_func_defs import *
-from ENLUCA_clin_goals import addClinicalGoal
+
 
 try:
     db = get_current("PatientDB")
