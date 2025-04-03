@@ -121,7 +121,7 @@ es=plan.TreatmentCourse.EvaluationSetup
 if ctv:
     ctv_minDose, const_num = minDose(po, roi=ctv, dose=6500, o_num=obj_num, c_num=const_num, constraint=True)
     ctv_minDVH, const_num = minDVH(po, roi=ctv, dose=6500, volume=100, o_num=obj_num, c_num=const_num, constraint=True, robust=True)
-    ctv_dose_fall_off, obj_num = fall_off(po, roi=ctv, o_num=obj_num, c_num=const_num, high_dose=9500, low_dose=66, distance=0.4, weight=100)
+    ctv_dose_fall_off, obj_num = fall_off(po, roi=ctv, o_num=obj_num, c_num=const_num, high_dose=9500, low_dose=6600, distance=0.4, weight=100)
     ctv_maxDose, const_num = maxDose(po, roi=ctv, dose=11500, o_num=obj_num, c_num=const_num, constraint=True)
     ctv_v100, obj_num = maxDVH(po, roi=ctv, dose=10000, volume=30, o_num=obj_num, c_num=const_num, absoluteVolume=True, weight=100)
     ctv_v105, obj_num = maxDVH(po, roi=ctv, dose=10500, volume=5, o_num=obj_num, c_num=const_num, absoluteVolume=True, weight=100)
