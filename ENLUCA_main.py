@@ -121,7 +121,7 @@ es=plan.TreatmentCourse.EvaluationSetup
 if ctv:
     ctv_minDose, const_num = minDose(po, roi=ctv, dose=6500, o_num=obj_num, c_num=const_num, constraint=True)
     ctv_minDVH, const_num = minDVH(po, roi=ctv, dose=6500, volume=100, o_num=obj_num, c_num=const_num, constraint=True, robust=True)
-    ctv_dose_fall_off, obj_num = fall_off(po, roi=ctv, o_num=obj_num, c_num=const_num, high_dose=9500, low_dose=0, distance=1)
+    ctv_dose_fall_off, obj_num = fall_off(po, roi=ctv, o_num=obj_num, c_num=const_num, high_dose=9500, low_dose=66, distance=0.4, weight=100)
     ctv_maxDose, const_num = maxDose(po, roi=ctv, dose=11500, o_num=obj_num, c_num=const_num, constraint=True)
     ctv_v100, obj_num = maxDVH(po, roi=ctv, dose=10000, volume=30, o_num=obj_num, c_num=const_num, absoluteVolume=True, weight=100)
     ctv_v105, obj_num = maxDVH(po, roi=ctv, dose=10500, volume=5, o_num=obj_num, c_num=const_num, absoluteVolume=True, weight=100)
@@ -141,12 +141,12 @@ if ctv:
 if expanded:
     expanded_maxDose, obj_num = maxDose(po, roi=expanded, dose=7400, o_num=obj_num, c_num=const_num,
                                weight=1500, robust=True)
-    expanded_fall_off, obj_num = fall_off(po, roi=expanded, o_num=obj_num, c_num=const_num, high_dose=9500, low_dose=2000, distance=1, weight=1000)
+    expanded_fall_off, obj_num = fall_off(po, roi=expanded, o_num=obj_num, c_num=const_num, high_dose=9500, low_dose=6270, distance=1, weight=1000)
 
 if ictv_gtv:
-    ictv_gtv_maxDose, obj_num = maxDose(po, roi=ictv_gtv, dose=7400, o_num=obj_num, c_num=const_num,
-                               weight=1500, robust=True)
-    ictv_gtv_median, obj_num = maxDVH(po, roi=ictv_gtv, dose=7000, volume=50, o_num=obj_num, c_num=const_num,
+    ictv_gtv_maxDose, obj_num = maxDose(po, roi=ictv_gtv, dose=8000, o_num=obj_num, c_num=const_num,
+                               weight=1500, robust=False)
+    ictv_gtv_median, obj_num = maxDVH(po, roi=ictv_gtv, dose=7500, volume=50, o_num=obj_num, c_num=const_num,
                              weight=1500)
 
 if body:
@@ -154,14 +154,15 @@ if body:
     body_fall_off, obj_num = fall_off(po, roi=body, o_num=obj_num, c_num=const_num, high_dose=6600, low_dose=0, distance=2)
 
 if spinal:
-    spinal_maxDose, obj_num = maxDose(po, roi=spinal, dose=4400, o_num=obj_num, c_num=const_num, weight=100000)
+    spinal_maxDose, obj_num = maxDose(po, roi=spinal, dose=4400, o_num=obj_num, c_num=const_num, constraint=True)
+    spinal_PRV, obj_num = maxDose(po, roi=spinal, dose=5000, o_num=obj_num, c_num=const_num, weight=100, robust=True)
     
     es.AddClinicalGoal(RoiName=spinal, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=0.05, PrimaryAcceptanceLevel=4500,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if heart:
     heart_maxDose, obj_num = maxDose(po, roi=heart, dose=7400, o_num=obj_num, c_num=const_num, weight=1500)
-    heart_meanDose, obj_num = maxEUD(po, roi=heart, dose=500, o_num=obj_num, c_num=const_num, weight=1500, robust=True)
+    heart_meanDose, obj_num = maxEUD(po, roi=heart, dose=500, o_num=obj_num, c_num=const_num, weight=1500)
     heart_fall_off, obj_num = fall_off(po, roi=heart, o_num=obj_num, c_num=const_num, high_dose=6600, low_dose=0, distance=2)
     
     es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7400,
@@ -176,7 +177,9 @@ if heart:
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if esophagus:
-    esophagus_maxDose, obj_num = maxDose(po, roi=esophagus, dose=6900, o_num=obj_num, c_num=const_num, weight=5000, robust=True)
+    esophagus_maxDose, obj_num = maxDose(po, roi=esophagus, dose=6900, o_num=obj_num, c_num=const_num, weight=5000, robust=False)
+    esophagus_PRV, obj_num = maxDose(po, roi=esophagus, dose=7400, o_num=obj_num, c_num=const_num, weight=5000, robust=True)
+    
     es.AddClinicalGoal(RoiName=esophagus, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7000,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
     es.AddClinicalGoal(RoiName=esophagus, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=3500, PrimaryAcceptanceLevel=0.40,
@@ -194,13 +197,15 @@ if mediastinum:
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if trachea:
-    trachea_maxDose, obj_num = maxDose(po, roi=trachea, dose=7400, o_num=obj_num, c_num=const_num, weight=1500, robust=True)
+    trachea_maxDose, obj_num = maxDose(po, roi=trachea, dose=7300, o_num=obj_num, c_num=const_num, weight=1500, robust=False)
+    trachea_PRV, obj_num = maxDose(po, roi=trachea, dose=7800, o_num=obj_num, c_num=const_num, weight=1500, robust=True)
     
     es.AddClinicalGoal(RoiName=trachea, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7400,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if bronchi:
-    bronchi_maxDose, obj_num = maxDose(po, roi=bronchi, dose=7400, o_num=obj_num, c_num=const_num, weight=5000, robust=True)
+    bronchi_maxDose, obj_num = maxDose(po, roi=bronchi, dose=7300, o_num=obj_num, c_num=const_num, weight=5000, robust=False)
+    bronchi_PRV, obj_num = maxDose(po, roi=bronchi, dose=7800, o_num=obj_num, c_num=const_num, weight=5000, robust=True)
     es.AddClinicalGoal(RoiName=bronchi, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7400,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
@@ -231,13 +236,13 @@ if boost:
     boost_targetEUD, obj_num = targetEUD(po, roi=boost, dose=9300, o_num=obj_num, c_num=const_num, weight=100,robust=True)
     boost_minDVH, obj_num = minDVH(po, roi=boost, dose=9025, volume=100, o_num=obj_num, c_num=const_num, weight=1500)
     
-    es.AddClinicalGoal(RoiName=ctv, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=9500,
+    es.AddClinicalGoal(RoiName=boost, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=9500,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if nodeboost:
-    nodeboost_targetEUD, obj_num = targetEUD(po, roi=nodeboost, dose=7400, o_num=obj_num, c_num=const_num, weight=100)
-    nodeboost_maxDose, obj_num = maxDose(po, roi=nodeboost, dose=8000, o_num=obj_num, c_num=const_num, weight=1500)
-    nodeboost_minDVH, obj_num = minDVH(po, roi=nodeboost, dose=7125, volume=100, o_num=obj_num, c_num=const_num, weight=100)
+    nodeboost_targetEUD, obj_num = targetEUD(po, roi=nodeboost, dose=7400, o_num=obj_num, c_num=const_num, weight=1000)
+    nodeboost_maxDose, obj_num = maxDose(po, roi=nodeboost, dose=8000, o_num=obj_num, c_num=const_num, weight=1000)
+    nodeboost_minDVH, obj_num = minDVH(po, roi=nodeboost, dose=7125, volume=100, o_num=obj_num, c_num=const_num, weight=1000)
     
     es.AddClinicalGoal(RoiName=nodeboost, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=7400,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
@@ -267,7 +272,7 @@ if lungs:
 
 if heart:
     heart_dose_1 = total_dose.GetDoseStatistic(RoiName=heart, DoseType="Average")
-    edit_objective(heart_meanDose, heart_dose_1 * 0.5, 10)
+    edit_objective(heart_meanDose, heart_dose_1 * 0.7, 10)
 
 # Ensuring boost dose is not above the set levels:
 if boost:
