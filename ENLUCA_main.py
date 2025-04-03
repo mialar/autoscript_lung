@@ -234,7 +234,8 @@ if lungs:
 
 if boost:
     boost_targetEUD, obj_num = targetEUD(po, roi=boost, dose=9300, o_num=obj_num, c_num=const_num, weight=100,robust=True)
-    boost_minDVH, obj_num = minDVH(po, roi=boost, dose=9025, volume=100, o_num=obj_num, c_num=const_num, weight=1500)
+    boost_minDVH, obj_num = minDVH(po, roi=boost, dose=9025, volume=75, o_num=obj_num, c_num=const_num, constraint=True)
+    boost_maxEUD, obj_num = maxEUD(po, boost, 9500, obj_num, const_num, weight=100)
     
     es.AddClinicalGoal(RoiName=boost, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=9500,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
