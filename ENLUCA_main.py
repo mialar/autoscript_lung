@@ -154,7 +154,7 @@ if body:
     body_fall_off, obj_num = fall_off(po, roi=body, o_num=obj_num, c_num=const_num, high_dose=6600, low_dose=0, distance=2)
 
 if spinal:
-    spinal_maxDose, obj_num = maxDose(po, roi=spinal, dose=4400, o_num=obj_num, c_num=const_num, constraint=True)
+    spinal_maxDose, const_num = maxDose(po, roi=spinal, dose=4400, o_num=obj_num, c_num=const_num, constraint=True)
     spinal_PRV, obj_num = maxDose(po, roi=spinal, dose=5000, o_num=obj_num, c_num=const_num, weight=100, robust=True)
     
     es.AddClinicalGoal(RoiName=spinal, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=0.05, PrimaryAcceptanceLevel=4500,
@@ -234,7 +234,7 @@ if lungs:
 
 if boost:
     boost_targetEUD, obj_num = targetEUD(po, roi=boost, dose=9300, o_num=obj_num, c_num=const_num, weight=100,robust=True)
-    boost_minDVH, obj_num = minDVH(po, roi=boost, dose=9025, volume=75, o_num=obj_num, c_num=const_num, constraint=True)
+    boost_minDVH, const_num = minDVH(po, roi=boost, dose=9025, volume=75, o_num=obj_num, c_num=const_num, constraint=True)
     boost_maxEUD, obj_num = maxEUD(po, boost, 9500, obj_num, const_num, weight=100)
     
     es.AddClinicalGoal(RoiName=boost, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=9500,
