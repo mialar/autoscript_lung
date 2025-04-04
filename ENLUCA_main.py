@@ -163,7 +163,7 @@ if spinal:
 if heart:
     heart_maxDose, obj_num = maxDose(po, roi=heart, dose=7400, o_num=obj_num, c_num=const_num, weight=1500)
     heart_meanDose, obj_num = maxEUD(po, roi=heart, dose=500, o_num=obj_num, c_num=const_num, weight=1500)
-    heart_fall_off, obj_num = fall_off(po, roi=heart, o_num=obj_num, c_num=const_num, high_dose=6600, low_dose=0, distance=2)
+    heart_fall_off, obj_num = fall_off(po, roi=heart, o_num=obj_num, c_num=const_num, high_dose=6600, low_dose=0, distance=1)
     
     es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7400,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
@@ -243,7 +243,7 @@ if boost:
 if nodeboost:
     nodeboost_targetEUD, obj_num = targetEUD(po, roi=nodeboost, dose=7400, o_num=obj_num, c_num=const_num, weight=1000)
     nodeboost_maxDose, obj_num = maxDose(po, roi=nodeboost, dose=8000, o_num=obj_num, c_num=const_num, weight=1000)
-    nodeboost_minDVH, obj_num = minDVH(po, roi=nodeboost, dose=7125, volume=100, o_num=obj_num, c_num=const_num, weight=1000)
+    nodeboost_minDose, obj_num = minDose(po, roi=nodeboost, dose=7200, o_num=obj_num, c_num=const_num, weight=1000)
     
     es.AddClinicalGoal(RoiName=nodeboost, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=7400,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
