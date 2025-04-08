@@ -167,7 +167,7 @@ if heart:
     
     es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=1, PrimaryAcceptanceLevel=7400,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
-    es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=5000,
+    es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="AverageDose", PrimaryAcceptanceLevel=500,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
     es.AddClinicalGoal(RoiName=heart, GoalCriteria="AtMost", GoalType="VolumeAtDose", ParameterValue=2500, PrimaryAcceptanceLevel=0.50,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
