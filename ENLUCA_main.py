@@ -157,7 +157,7 @@ if spinal:
     spinal_maxDose, const_num = maxDose(po, roi=spinal, dose=4400, o_num=obj_num, c_num=const_num, constraint=True)
     spinal_PRV, obj_num = maxDose(po, roi=spinal, dose=5000, o_num=obj_num, c_num=const_num, weight=100, robust=True)
     
-    es.AddClinicalGoal(RoiName=spinal, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=0.05, PrimaryAcceptanceLevel=4500,
+    es.AddClinicalGoal(RoiName=spinal, GoalCriteria="AtMost", GoalType="DoseAtAbsoluteVolume", ParameterValue=0.05, PrimaryAcceptanceLevel=5000,
                                       IsComparativeGoal=False, BeamSet=beam_set, Priority=2147483647, AssociateToPlan=False)
 
 if heart:
@@ -324,7 +324,8 @@ optimization_parameters(po, iter=200, tolerance=1e-9)
 po.RunOptimization()
 
 # Compute final dose, this locks in the dose/ plan and ends optimization
-beam_set.ComputeDose(RunEntryValidation=True)
+beam_set.AccurateDoseAlgorithm.MCStatisticalUncertaintyForFinalDose = 0.005
+beam_set.ComputeDose(ComputeBeamDoses=True, DoseAlgorithm="IonMonteCarlo", ForceRecompute=False)
 
 robusteval = beam_set.CreateRadiationSetScenarioGroup(Name="5mm/3.5%", UseIsotropicPositionUncertainty=False,
                                                       PositionUncertaintySuperior=0.5, PositionUncertaintyInferior=0.5,

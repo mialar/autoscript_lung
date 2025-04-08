@@ -27,15 +27,15 @@ def beam_gui():
     beam3.config(width=40, height=5)
     
     # Beam angle entry fields
-    ba1_var = DoubleVar()
+    ba1_var = StringVar()
     box1 = Entry(win, textvariable=ba1_var)
     box1.grid(column=1, row=0)
     
-    ba2_var = DoubleVar()
+    ba2_var = StringVar()
     box2 = Entry(win, textvariable=ba2_var)
     box2.grid(column=1, row=1)
     
-    ba3_var = DoubleVar()
+    ba3_var = StringVar()
     box3 = Entry(win, textvariable=ba3_var)
     box3.grid(column=1, row=2)
     
@@ -45,7 +45,7 @@ def beam_gui():
         # Function to safely get a value from an Entry field
         def get_entry_value(entry):
             value = entry.get().strip()  # Get text input as string and strip spaces
-            return float(value) if value != "" else None  # Convert if non-empty
+            return float(value) if value else None  # Convert if non-empty
 
         # Retrieve values, checking if entry is empty
         ba1 = get_entry_value(box1)
