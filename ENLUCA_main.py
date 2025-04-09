@@ -324,8 +324,7 @@ optimization_parameters(po, iter=200, tolerance=1e-9)
 po.RunOptimization()
 
 # Compute final dose, this locks in the dose/ plan and ends optimization
-beam_set.AccurateDoseAlgorithm.MCStatisticalUncertaintyForFinalDose = 0.005
-beam_set.ComputeDose(ComputeBeamDoses=True, DoseAlgorithm="IonMonteCarlo", ForceRecompute=False)
+beam_set.ComputeDose(RunEntryValidation=True)
 
 robusteval = beam_set.CreateRadiationSetScenarioGroup(Name="5mm/3.5%", UseIsotropicPositionUncertainty=False,
                                                       PositionUncertaintySuperior=0.5, PositionUncertaintyInferior=0.5,
