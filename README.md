@@ -8,4 +8,3 @@ The script starts with a GUI for structure selection based on the open imaging s
 
 The optimization is based on constraints to organs at risk from the NARLAL2 dose-escalation study performed in Denmark and Norway with photon radiotherapy as well as some decrease in lung and heart doses to achieve greater safety margins in regards to toxicity. The script escalates a primary boost volume in the primary tumor to 95 Gy and a nodal boost volume in affected lymph nodes to 74 Gy. The rest of the tumor volume outside the boost volumes are given 66 Gy in 33 fractions. The final optimization run in the script uses Monte Carlo simulations with 200 iterations and a tolerance of 1e-9 and saves the plan when finished. 
 
-For any questions, feel free to contact me at mia@bel.no
